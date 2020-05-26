@@ -9,6 +9,11 @@
   &--medium {
     max-width: 900px;
   }
+
+  &--narrow {
+    max-width: 470px;
+  }
+
   &--b-margin {
     margin-bottom: 1rem;
     @mixin atSmall {
