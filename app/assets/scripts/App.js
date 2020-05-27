@@ -4,7 +4,7 @@ import MobileMenu from "./modules/MobileMenu"
 import RevealOnScroll from "./modules/RevealOnScroll"
 import StickyHeader from "./modules/StickyHeader"
 
-import ClientArea from "./modules/clientArea"
+import ClientArea from "./modules/ClientArea"
 
 new ClientArea()
 new StickyHeader()
