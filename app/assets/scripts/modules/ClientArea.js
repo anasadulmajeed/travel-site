@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from "axios"
 
 class ClientArea {
   constructor() {
@@ -17,18 +17,22 @@ class ClientArea {
   }
 
   sendRequest() {
-    Axios.post('https://pensive-rosalind-383c21.netlify.com/.netlify/functions/secret-area', {password: this.field.value}).then(response => {
-      this.form.remove()
-      this.contentArea.innerHTML = response.data
-    }).catch(() => {
-      this.contentArea.innerHTML = `<p class="client-area__error">That secret phrase is not correct. Try again.</p>`
-      this.field.value = ''
-      this.field.focus()
-    })
+    Axios.post("https://thirsty-mccarthy-9cf11c.netlify.app/.netlify/functions/secret-area", { password: this.field.value })
+      .then(response => {
+        this.form.remove()
+        this.contentArea.innerHTML = response.data
+      })
+      .catch(() => {
+        this.contentArea.innerHTML = `<p class="client-area__error">That secret phrase is not correct. Try again.</p>`
+        this.field.value = ""
+        this.field.focus()
+      })
   }
 
   injectHTML() {
-    document.body.insertAdjacentHTML('beforeend', `
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `
     <div class="client-area">
       <div class="wrapper wrapper--medium">
         <h2 class="section-title section-title--blue">Secret Client Area</h2>
@@ -39,7 +43,8 @@ class ClientArea {
         <div class="client-area__content-area"></div>
       </div>
     </div>
-    `)
+    `
+    )
   }
 }
 
