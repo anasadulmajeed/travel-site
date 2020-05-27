@@ -13,7 +13,7 @@ class RunAfterCompile {
     })
   }
 }
-
+/* Creating a cssConfig for solving the condition logic and serving the style loader for dev mode and mini-css-extraction plugin for --prod mod */
 let cssConfig = {
   test: /\.css$/i,
   use: ["css-loader?url=false", { loader: "postcss-loader", options: { plugins: postCSSPlugins } }]
@@ -31,55 +31,67 @@ let pages = fse
     })
   })
 
+/* -------------------------------------------------------------------------------------------- 
+  This config OBJECT IS THE MAIN OR SOUL
+   of this webpack.config.js file 
+        *****THIS WILL BE APPLIED TO BOTH PRODUCTION AND DEV MODES BASED ON DEFINED ***** 
+   -------------------------------------------------------------------------------------------
+*/
 let config = {
   entry: "./app/assets/scripts/App.js",
-  plugins: pages,
+  plugins: pages /* IN WEBPACK PLUGIN-property is array #######*****KEEP IN MIND*****##### */,
   module: {
-    rules: [cssConfig]
+    rules: [cssConfig] /* IN WEBPACK RULES-property is a collection of objects #######*****KEEP IN MIND*****##### */
   }
 }
+/* ------------------------------------------------------------------------------------------------- 
+                            ********main config ends here*******
+  ---------------------------------------------------------------------------------------------------------------
+*/
 
+/* Making a way for development mode */
 if (currentTask == "dev") {
-  cssConfig.use.unshift("style-loader")
+  cssConfig.use.unshift("style-loader") /* This will add styles to the js, here we are adding this as first element of cssConfig.use's array */
   config.output = {
     filename: "bundled.js",
-    path: path.resolve(__dirname, "app")
+    path: path.resolve(__dirname, "app") /* Here configuring the output file */
   }
   config.devServer = {
     before: function (app, server) {
-      server._watch("./app/**/*.html")
+      server._watch("./app/**/*.html") /* webpack takes care all about this; here webpacks watchs is there any changes occurs to any of the files and injects js or css as hot module replacement */
     },
     contentBase: path.join(__dirname, "app"),
     hot: true,
     port: 3000,
     host: "0.0.0.0"
   }
-  config.mode = "development"
+  config.mode = "development" /* Configuring the mode;i.e; saying to the webpack which mode we are using */
 }
 
+/* Making a way for buil mode */
 if (currentTask == "build") {
   config.module.rules.push({
-    test: /\.js$/,
+    /* here we are pushing this to the rules array */ test: /\.js$/,
     exclude: /(node_modules)/,
     use: {
       loader: "babel-loader",
       options: {
-        presets: ["@babel/preset-env"]
+        presets: ["@babel/preset-env"] /* Adding support for older browsers to support es6 syntax   */
       }
     }
   })
-  cssConfig.use.unshift(MiniCssExtractPlugin.loader)
-  postCSSPlugins.push(require("cssnano"))
+  cssConfig.use.unshift(MiniCssExtractPlugin.loader) /* This plugin will extract css from the bundled js here we are adding at the first of an array with unshift  */
+  postCSSPlugins.push(require("cssnano")) /* posts css plugin(cssnano) it is used to minify here we are pushing to the array that we are declared above */
   config.output = {
-    filename: "[name].[chunkhash].js",
+    /* webpack object key output ; Here configuring output fiel name  */ filename: "[name].[chunkhash].js",
     chunkFilename: "[name].[chunkhash].js",
     path: path.resolve(__dirname, "docs")
   }
-  config.mode = "production"
+  config.mode = "production" /* Determining the mode of the config */
   config.optimization = {
-    splitChunks: { chunks: "all" }
+    splitChunks: { chunks: "all" } /* By specifing this we will see the name of the files in dist/docs file */
   }
-  config.plugins.push(new CleanWebpackPlugin(), new MiniCssExtractPlugin({ filename: "styles.[chunkhash].css" }), new RunAfterCompile())
+  config.plugins.push(new CleanWebpackPlugin(), new MiniCssExtractPlugin({ filename: "styles.[chunkhash].css" }), new RunAfterCompile()) /* RunAfterCompile() is myOwn function is used to transfer all the files to the dist/docs folder with fse */
 }
 
 // let deleteMeLater = {

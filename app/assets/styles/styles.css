@@ -3,12 +3,12 @@
 @import "base/_mixins";
 @import "base/_global";
 @import "modules/_large-hero";
+@import "modules/_btn";
 @import "modules/_wrapper";
 @import "modules/_page-section";
 @import "modules/_headline";
 @import "modules/_row";
 @import "modules/_generic-content-container";
-@import "modules/_btn";
 @import "modules/_section-title";
 @import "modules/_features-item";
 @import "modules/_testimonials";
@@ -17,4 +17,5 @@
 @import "modules/_primary-nav";
 @import "modules/_reveal-item";
 @import "modules/_modal";
-@import "modules/_social-icons.css";
+@import "modules/_social-icons";
+@import "modules/_client-area";
